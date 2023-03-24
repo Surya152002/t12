@@ -72,46 +72,26 @@
 
           // function to generate time table
           function generateTimeTable(courses) {
-          const timeTable = {};
-
-          // group slots and courses by week
-          const weeks = {};
-          daysOfWeek.forEach((day, index) => {
-            const weekNum = Math.floor(index / 5) + 1; // 1-based week number
-            if (!weeks[weekNum]) {
-              weeks[weekNum] = { slots: [], courses: [] };
-            }
-            weeks[weekNum].slots.push(slots[index]);
-            weeks[weekNum].courses.push(...courses.filter(course => {
-              const faculty = course.faculty.find(f => f.availability[index]);
-              return faculty && !weeks[weekNum].courses.includes(course);
-            }));
-          });
-
-          // generate time table for each week
-          for (const weekNum in weeks) {
-            const week = weeks[weekNum];
-            week.slots.forEach((slot, index) => {
-              daysOfWeek.forEach((day) => {
-                if (!timeTable[day]) {
-                  timeTable[day] = [];
-                }
-                const availableCourses = week.courses.filter(course => {
-                  const faculty = course.faculty.find(f => f.availability[daysOfWeek.indexOf(day)]);
-                  return faculty && !timeTable[day].some(entry => entry.course === course.name);
+            const timeTable = {};
+            daysOfWeek.forEach((day) => {
+              timeTable[day] = [];
+              const slotsCopy = [...slots]; // make a copy of slots for the current day
+              for (let i = 0; i < slots.length; i++) {
+                const availableCourses = courses.filter((course) => {
+                  const faculty = course.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
+                  return faculty && !slotsCopy.includes(course.name); // check if course is available and hasn't been assigned to a slot yet
                 });
                 if (availableCourses.length === 0) {
-                  timeTable[day].push({ slot: slot, course: '', faculty: [] }); // add empty slot if no available courses
-                } else {
-                  const selectedCourse = availableCourses[Math.floor(Math.random() * availableCourses.length)];
-                  timeTable[day].push({ slot: slot, course: selectedCourse.name, faculty: selectedCourse.faculty });
+                  break; // no available courses for the remaining slots
                 }
-              });
+                const selectedCourse = availableCourses[Math.floor(Math.random() * availableCourses.length)]; // select a random course
+                slotsCopy[i] = selectedCourse.name; // assign the course to the slot
+                timeTable[day].push({ slot: slots[i], course: selectedCourse.name, faculty: selectedCourse.faculty }); // add the course to the time table
+              }
             });
+            return timeTable;
           }
 
-          return timeTable;
-        }
 
 
           // generate time table
