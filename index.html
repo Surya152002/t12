@@ -38,16 +38,33 @@
         <script>
           // list of courses and their faculty ratings
           const courses = [
-            {
-              name: "Mathematics",
-              faculty: [
-                { name: "John", ratings: 8, availability: [true, false, true, true, false] },
-                { name: "Jane", ratings: 9, availability: [true, true, true, false, false] },
-                { name: "Bob", ratings: 7, availability: [true, true, false, true, false] },
-              ],
-            },
-            // add more courses here
-          ];
+          {
+            name: "Mathematics",
+            faculty: [
+              { name: "John", ratings: 8, availability: [true, false, true, true, false] },
+              { name: "Jane", ratings: 9, availability: [true, true, true, false, false] },
+              { name: "Bob", ratings: 7, availability: [true, true, false, true, false] },
+            ],
+          },
+          {
+            name: "Physics",
+            faculty: [
+              { name: "Alice", ratings: 9, availability: [false, true, true, true, true] },
+              { name: "Charlie", ratings: 8, availability: [true, false, true, true, false] },
+              { name: "David", ratings: 7, availability: [true, true, false, true, false] },
+            ],
+          },
+          {
+            name: "Chemistry",
+            faculty: [
+              { name: "Eve", ratings: 8, availability: [true, true, false, true, true] },
+              { name: "Frank", ratings: 7, availability: [false, true, true, true, false] },
+              { name: "Grace", ratings: 9, availability: [true, true, true, false, false] },
+            ],
+          },
+          // add more courses here
+        ];
+
 
           // generate time table for a week from Monday to Friday
           const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
