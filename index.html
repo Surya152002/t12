@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Table</title>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 5px;
+        text-align: center;
+      }
+      th {
+        background-color: #d9d9d9;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Time Table:</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Time</th>
+          <th>Course</th>
+          <th>Faculty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <script>
+          // list of courses and their faculty ratings
+          const courses = [
+            {
+              name: "Mathematics",
+              faculty: [
+                { name: "John", ratings: 8, availability: [true, false, true, true, false] },
+                { name: "Jane", ratings: 9, availability: [true, true, true, false, false] },
+                { name: "Bob", ratings: 7, availability: [true, true, false, true, false] },
+              ],
+            },
+            // add more courses here
+          ];
+
+          // generate time table for a week from Monday to Friday
+          const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+          const slots = ["A1", "F1", "D1", "B1", "C1", "E1"]; // slots for each day
+
+          // function to generate time table
+          function generateTimeTable(courses) {
+            const timeTable = {};
+            daysOfWeek.forEach((day) => {
+              timeTable[day] = [];
+              const slotsCopy = [...slots]; // make a copy of slots for the current day
+              for (let i = 0; i < slots.length; i++) {
+                const availableCourses = courses.filter((course) => {
+                  const faculty = course.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
+                  return faculty && !slotsCopy.includes(course.name); // check if course is available and hasn't been assigned to a slot yet
+                });
+                if (availableCourses.length === 0) {
+                  break; // no available courses for the remaining slots
+                }
+                const selectedCourse = availableCourses[Math.floor(Math.random() * availableCourses.length)]; // select a random course
+                slotsCopy[i] = selectedCourse.name; // assign the course to the slot
+                timeTable[day].push({ slot: slots[i], course: selectedCourse.name, faculty: selectedCourse.faculty }); // add the course to the time table
+              }
+            });
+            return timeTable;
+          }
+
+          // generate time table
+          const timeTable = generateTimeTable(courses);
+
+          // print time table
+          for (const day in timeTable) {
+            let startHour = 8; // start at 8:00 AM
+            let startMinute = 0;
+            timeTable[day].forEach((entry, index) => {
+              const endHour = startHour + Math.floor((startMinute + 50) / 60) % 12; // calculate end hour using modulo 12
+              const endMinute = (startMinute + 50) % 60; // calculate end minute
+              const timeRange = '${startHour}:${startMinute.toString().padStart(2, "0")} - ${endHour}:${endMinute.toString().padStart(2, "0")}${endHour < 12 ? " AM" : " PM"}'; // format time range string
+              const facultyNames = entry.faculty.map((f) => f.name).join(", "); // get names of faculty teaching the course
+              const facultyRatings = entry.faculty.map((f) => f.ratings); // get ratings of faculty teaching the course
+              const facultyAverageRating = facultyRatings.reduce((total, rating) => total + rating) / facultyRatings.length; // calculate average rating of faculty teaching the course
+              const courseAvailability = entry.faculty.map((f) => f.availability[daysOfWeek.indexOf(day)]); // get availability of faculty teaching the course
+              const courseAvailabilityPercentage = (courseAvailability.filter((a) => a).length / courseAvailability.length) * 100; // calculate availability percentage of faculty teaching the course
+              const tableRow = '<tr> <td>${day}</td> <td>${timeRange}</td> <td>${entry.course}</td> <td>${facultyNames}</td> <td>${facultyAverageRating.toFixed(1)}</td> <td>${courseAvailabilityPercentage.toFixed(1)}%</td> </tr>'; // create table row HTML
+              document.querySelector("tbody").innerHTML += tableRow; // add table row to HTML
+              startMinute += 50; // increment start minute for next slot
+              if (startMinute >= 60) {
+                startHour += 1; // increment start hour if start minute is >= 60
+                startMinute -= 60;
+              }
+});
+}
+</script>
+</tbody>
+</table>
+
+  </body>
+</html>
