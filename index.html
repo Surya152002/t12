@@ -85,13 +85,13 @@
             timeTable[day].forEach((entry, index) => {
               const endHour = startHour + Math.floor((startMinute + 50) / 60) % 12; // calculate end hour using modulo 12
               const endMinute = (startMinute + 50) % 60; // calculate end minute
-              const timeRange = '${startHour}:${startMinute.toString().padStart(2, "0")} - ${endHour}:${endMinute.toString().padStart(2, "0")}${endHour < 12 ? " AM" : " PM"}'; // format time range string
+              const timeRange = `${startHour}:${startMinute.toString().padStart(2, "0")} - ${endHour}:${endMinute.toString().padStart(2, "0")}${endHour < 12 ? " AM" : " PM"}`; // format time range string
               const facultyNames = entry.faculty.map((f) => f.name).join(", "); // get names of faculty teaching the course
               const facultyRatings = entry.faculty.map((f) => f.ratings); // get ratings of faculty teaching the course
               const facultyAverageRating = facultyRatings.reduce((total, rating) => total + rating) / facultyRatings.length; // calculate average rating of faculty teaching the course
               const courseAvailability = entry.faculty.map((f) => f.availability[daysOfWeek.indexOf(day)]); // get availability of faculty teaching the course
               const courseAvailabilityPercentage = (courseAvailability.filter((a) => a).length / courseAvailability.length) * 100; // calculate availability percentage of faculty teaching the course
-              const tableRow = '<tr> <td>${day}</td> <td>${timeRange}</td> <td>${entry.course}</td> <td>${facultyNames}</td> <td>${facultyAverageRating.toFixed(1)}</td> <td>${courseAvailabilityPercentage.toFixed(1)}%</td> </tr>'; // create table row HTML
+              const tableRow = `<tr> <td>${day}</td> <td>${timeRange}</td> <td>${entry.course}</td> <td>${facultyNames}</td> <td>${facultyAverageRating.toFixed(1)}</td> <td>${courseAvailabilityPercentage.toFixed(1)}%</td> </tr>`; // create table row HTML
               document.querySelector("tbody").innerHTML += tableRow; // add table row to HTML
               startMinute += 50; // increment start minute for next slot
               if (startMinute >= 60) {
