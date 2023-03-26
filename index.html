@@ -200,7 +200,7 @@
               const courseAvailabilityPercentage = (courseAvailability.filter((a) => a).length / courseAvailability.length) * 100; // calculate availability percentage of faculty teaching the course
               const tableRow = `<tr> <td>${day}</td> <td>${timeRange}</td> <td>${entry.course}</td> <td>${facultyNames}</td> <td>${facultyAverageRating.toFixed(1)}</td> <td>${courseAvailabilityPercentage.toFixed(1)}%</td> </tr>`; // create table row HTML
               document.querySelector("tbody").innerHTML += tableRow; // add table row to HTML
-              startMinute += 50; // increment start minute for next slot
+              startMinute += 55; // increment start minute for next slot
               if (startMinute >= 60) {
                 startHour += 1; // increment start hour if start minute is >= 60
                 startMinute -= 60;
