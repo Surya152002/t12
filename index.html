@@ -146,16 +146,20 @@
           // add more courses here
         ];
 
+        // generate time table for a week from Monday to Friday
         const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-        const morningSlots = ["A1", "B1", "C1", "D1", "E1"];
-        const eveningSlots = ["F1", "G1", "H1", "I1", "J1"];
 
-        function generateTimeTable(courses, slots) {
+        // slots for each day
+        const morningSlots = ["A1", "B1", "C1", "D1", "E1", "F1"]; 
+        const eveningSlots = ["A2", "B2", "C2", "D2", "E2", "F2"]; 
+
+        // function to generate time table
+        function generateTimeTable(courses, startTime) {
           const timeTable = {};
           daysOfWeek.forEach((day) => {
             timeTable[day] = [];
-            const slotsCopy = [...slots]; // make a copy of slots for the current day
-            for (let i = 0; i < slots.length; i++) {
+            const slotsCopy = [...(startTime === "morning" ? morningSlots : eveningSlots)]; // make a copy of slots for the current day
+            for (let i = 0; i < slotsCopy.length; i++) {
               const availableCourses = courses.filter((course) => {
                 const faculty = course.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
                 return faculty && !slotsCopy.includes(course.name); // check if course is available and hasn't been assigned to a slot yet
@@ -165,46 +169,22 @@
               }
               const selectedCourse = availableCourses[Math.floor(Math.random() * availableCourses.length)]; // select a random course
               slotsCopy[i] = selectedCourse.name; // assign the course to the slot
-              timeTable[day].push({ slot: slots[i], course: selectedCourse.name, faculty: selectedCourse.faculty }); // add the course to the time table
+              const slot = (startTime === "morning" ? morningSlots[i] : eveningSlots[i]); // get the corresponding slot for the current start time
+              timeTable[day].push({ slot: slot, course: selectedCourse.name, faculty: selectedCourse.faculty }); // add the course to the time table
             }
           });
           return timeTable;
         }
 
-        // prompt user to select a time slot option
-        const slotOption = prompt("Enter 1 for morning slot (starting at 8:00 AM) or 2 for evening slot (starting at 2:00 PM)");
-
-        let slots;
-        if (slotOption === "1") {
-          slots = morningSlots;
-        } else if (slotOption === "2") {
-          slots = eveningSlots;
-        } else {
-          alert("Invalid option selected. Defaulting to morning slot.");
-          slots = morningSlots;
-        }
+        // get the start time (morning or evening) from the HTML file
+        const startTime = document.querySelector("#start-time").value;
 
         // generate time table
-        const timeTable = generateTimeTable(courses, slots);
+        const timeTable = generateTimeTable(courses, startTime);
 
-
-let startHour = 0;
-          // print time table
-          for (const day in timeTable) {
-            // prompt user to select a time slot option
-            const slotOption = prompt("Enter 1 for morning slot (starting at 8:00 AM) or 2 for evening slot (starting at 2:00 PM)");
-
-            let slots;
-            if (slotOption === "1") {
-              slots = morningSlots;
-              startHour = 8; // start at 8:00 AM
-            } else if (slotOption === "2") {
-              slots = eveningSlots;
-              startHour = 2; // start at 2:00 PM
-            } else {
-              alert("Invalid option selected. Defaulting to morning slot.");
-              slots = morningSlots;
-            }
+        // print time table
+        for (const day in timeTable) {
+          let startHour = (startTime === "morning" ? 8 : 2); // start
             
             let startMinute = 0;
             timeTable[day].forEach((entry, index) => {
