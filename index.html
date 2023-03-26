@@ -5,22 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Time Table</title>
     <style>
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th,
-      td {
-        border: 1px solid black;
-        padding: 5px;
-        text-align: center;
-      }
-      th {
-        background-color: #d9d9d9;
-      }
-      tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
+      /* Style for table */
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          font-family: Arial, sans-serif;
+          margin-bottom: 20px;
+        }
+
+        th,
+        td {
+          border: 1px solid black;
+          padding: 10px;
+          text-align: center;
+        }
+
+        th {
+          background-color: #d9d9d9;
+          font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
+
+        /* Style for h1 */
+        h1 {
+          font-size: 32px;
+          font-weight: bold;
+          text-align: center;
+          margin-top: 40px;
+          margin-bottom: 20px;
+        }
+
+        /* Style for time range */
+        .time-range {
+          font-weight: bold;
+        }
+
+        /* Style for faculty ratings */
+        .faculty-ratings {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          margin: 0 2px;
+        }
+
+        .faculty-ratings--1 {
+          background-color: #e6e6e6;
+        }
+
+        .faculty-ratings--2 {
+          background-color: #ffb3b3;
+        }
+
+        .faculty-ratings--3 {
+          background-color: #ffd1b3;
+        }
+
+        .faculty-ratings--4 {
+          background-color: #fff3b3;
+        }
+
+        .faculty-ratings--5 {
+          background-color: #c1f0c1;
+        }
+
+        .faculty-ratings--6 {
+          background-color: #b3e6ff;
+        }
+
+        .faculty-ratings--7 {
+          background-color: #b3b3ff;
+        }
+
+        .faculty-ratings--8 {
+          background-color: #d9b3ff;
+        }
+
+        .faculty-ratings--9 {
+          background-color: #ffccff;
+        }
+
+        .faculty-ratings--10 {
+          background-color: #ffd9e6;
+        }
+
+        /* Style for course availability percentage */
+        .course-availability-percentage {
+          font-weight: bold;
+        }
+
     </style>
   </head>
   <body>
