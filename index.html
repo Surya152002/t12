@@ -171,18 +171,18 @@
           return timeTable;
         }
 
-        // prompt user to select a time slot option
-        const slotOption = prompt("Enter 1 for morning slot (starting at 8:00 AM) or 2 for evening slot (starting at 2:00 PM)");
+//         // prompt user to select a time slot option
+//         const slotOption = prompt("Enter 1 for morning slot (starting at 8:00 AM) or 2 for evening slot (starting at 2:00 PM)");
 
-        let slots;
-        if (slotOption === "1") {
-          slots = morningSlots;
-        } else if (slotOption === "2") {
-          slots = eveningSlots;
-        } else {
-          alert("Invalid option selected. Defaulting to morning slot.");
-          slots = morningSlots;
-        }
+//         let slots;
+//         if (slotOption === "1") {
+//           slots = morningSlots;
+//         } else if (slotOption === "2") {
+//           slots = eveningSlots;
+//         } else {
+//           alert("Invalid option selected. Defaulting to morning slot.");
+//           slots = morningSlots;
+//         }
 
         // generate time table
         const timeTable = generateTimeTable(courses, slots);
@@ -191,7 +191,21 @@
 
           // print time table
           for (const day in timeTable) {
-            let startHour = 8; // start at 8:00 AM
+            // prompt user to select a time slot option
+            const slotOption = prompt("Enter 1 for morning slot (starting at 8:00 AM) or 2 for evening slot (starting at 2:00 PM)");
+
+            let slots;
+            if (slotOption === "1") {
+              slots = morningSlots;
+              let startHour = 8; // start at 8:00 AM
+            } else if (slotOption === "2") {
+              slots = eveningSlots;
+              let startHour = 2; // start at 2:00 PM
+            } else {
+              alert("Invalid option selected. Defaulting to morning slot.");
+              slots = morningSlots;
+            }
+            
             let startMinute = 0;
             timeTable[day].forEach((entry, index) => {
               const endHour = startHour + Math.floor((startMinute + 50) / 60) % 12; // calculate end hour using modulo 12
