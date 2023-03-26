@@ -158,17 +158,27 @@
               timeTable[day] = [];
               const slotsCopy = [...slots]; // make a copy of slots for the current day
               for (let i = 0; i < slots.length; i++) {
+                // check if it's not the first slot of the day
+                if (i > 0) {
+                  // add 5 minutes to the start time of the current slot
+                  const [hour, minute] = slotsCopy[i].split(":");
+                  const startHour = parseInt(hour);
+                  const startMinute = parseInt(minute) + 5;
+                  slotsCopy[i] = `${startHour.toString().padStart(2, "0")}:${startMinute.toString().padStart(2, "0")}`;
+                }
+                // rest of the code remains the same
                 const availableCourses = courses.filter((course) => {
                   const faculty = course.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
-                  return faculty && !slotsCopy.includes(course.name); // check if course is available and hasn't been assigned to a slot yet
+                  return faculty && !slotsCopy.includes(course.name);
                 });
                 if (availableCourses.length === 0) {
-                  break; // no available courses for the remaining slots
+                  break;
                 }
-                const selectedCourse = availableCourses[Math.floor(Math.random() * availableCourses.length)]; // select a random course
-                slotsCopy[i] = selectedCourse.name; // assign the course to the slot
-                timeTable[day].push({ slot: slots[i], course: selectedCourse.name, faculty: selectedCourse.faculty }); // add the course to the time table
+                const selectedCourse = availableCourses[Math.floor(Math.random() * availableCourses.length)];
+                slotsCopy[i] = selectedCourse.name;
+                timeTable[day].push({ slot: slotsCopy[i], course: selectedCourse.name, faculty: selectedCourse.faculty });
               }
+
             });
             return timeTable;
           }
