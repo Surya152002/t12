@@ -146,6 +146,9 @@
           // add more courses here
         ];
 
+        
+       
+
         const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         const morningSlots = ["A1", "B1", "C1", "D1", "E1"];
         const eveningSlots = ["F1", "G1", "H1", "I1", "J1"];
@@ -171,6 +174,49 @@
           return timeTable;
         }
 
+        function tsp(distances) {
+          const n = distances.length;
+          const dp = Array(1 << n).fill().map(() => Array(n).fill(Infinity));
+
+          // base case: starting from any node to itself has distance 0
+          for (let i = 0; i < n; i++) {
+            dp[1 << i][i] = 0;
+          }
+
+          // iterate over all subsets of nodes
+          for (let mask = 0; mask < (1 << n); mask++) {
+            for (let i = 0; i < n; i++) {
+              if ((mask & (1 << i)) !== 0) { // if node i is in the current subset
+                for (let j = 0; j < n; j++) {
+                  if ((mask & (1 << j)) !== 0) { // if node j is also in the subset
+                    dp[mask][i] = Math.min(dp[mask][i], dp[mask ^ (1 << i)][j] + distances[j][i]); // update dp state
+                  }
+                }
+              }
+            }
+          }
+
+          // find the shortest Hamiltonian cycle
+          let minDist = Infinity;
+          for (let i =0; i < n; i++) {
+        minDist = Math.min(minDist, dp[(1 << n) - 1][i]); // update minDist with the minimum distance among all possible Hamiltonian cycles
+        }
+        return minDist;
+        }
+
+        // sample usage
+        const distances = [
+        [0, 10, 15, 20],
+        [10, 0, 35, 25],
+        [15, 35, 0, 30],
+        [20, 25, 30, 0],
+        ];
+
+        const shortestCycleLength = tsp(distances);
+        console.log("Shortest Hamiltonian cycle length:", shortestCycleLength);
+
+//         const timeTable = generateTimeTable(courses, morningSlots.concat(eveningSlots));
+//         console.log("Generated time table:", timeTable);
 
         // prompt user to select a time slot option
         const slotOption = prompt("Enter 1 for morning slot (starting at 8:00 AM) or 2 for evening slot (starting at 2:00 PM)");
