@@ -188,7 +188,7 @@
         const timeTable = generateTimeTable(courses, slots);
 
 
-
+let startHour = 0;
           // print time table
           for (const day in timeTable) {
             // prompt user to select a time slot option
@@ -197,10 +197,10 @@
             let slots;
             if (slotOption === "1") {
               slots = morningSlots;
-              let startHour = 8; // start at 8:00 AM
+              startHour = 8; // start at 8:00 AM
             } else if (slotOption === "2") {
               slots = eveningSlots;
-              let startHour = 2; // start at 2:00 PM
+              startHour = 2; // start at 2:00 PM
             } else {
               alert("Invalid option selected. Defaulting to morning slot.");
               slots = morningSlots;
