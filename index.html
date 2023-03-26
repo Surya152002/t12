@@ -151,52 +151,25 @@
         const eveningSlots = ["F1", "G1", "H1", "I1", "J1"];
 
         function generateTimeTable(courses, slots) {
-        // create a graph where each node represents a course and each edge represents the cost of scheduling those courses back-to-back
-        const graph = {};
-        for (const course1 of courses) {
-          graph[course1.name] = {};
-          for (const course2 of courses) {
-            if (course1.name === course2.name) {
-              continue;
-            }
-            let cost = 0;
+          const timeTable = {};
+          daysOfWeek.forEach((day) => {
+            timeTable[day] = [];
+            const slotsCopy = [...slots]; // make a copy of slots for the current day
             for (let i = 0; i < slots.length; i++) {
-              const slot1 = slots[i];
-              const slot2 = slots[i + 1];
-              if (!slot2) {
-                break;
+              const availableCourses = courses.filter((course) => {
+                const faculty = course.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
+                return faculty && !slotsCopy.includes(course.name); // check if course is available and hasn't been assigned to a slot yet
+              });
+              if (availableCourses.length === 0) {
+                break; // no available courses for the remaining slots
               }
-              const faculty1 = course1.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
-              const faculty2 = course2.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
-              if (!faculty1 || !faculty2) {
-                continue;
-              }
-              const slot1Index = slots.indexOf(slot1);
-              const slot2Index = slots.indexOf(slot2);
-              const slotDiff = Math.abs(slot1Index - slot2Index);
-              cost += slotDiff * (faculty1.ratings + faculty2.ratings);
+              const selectedCourse = availableCourses[Math.floor(Math.random() * availableCourses.length)]; // select a random course
+              slotsCopy[i] = selectedCourse.name; // assign the course to the slot
+              timeTable[day].push({ slot: slots[i], course: selectedCourse.name, faculty: selectedCourse.faculty }); // add the course to the time table
             }
-            graph[course1.name][course2.name] = cost;
-          }
+          });
+          return timeTable;
         }
-
-        // solve the TSP to find the optimal schedule
-        const tsp = new TSP();
-        const schedule = tsp.solve(graph, courses[0].name);
-
-        // create the time table from the optimal schedule
-        const timeTable = {};
-        daysOfWeek.forEach((day) => {
-          timeTable[day] = [];
-          for (let i = 0; i < slots.length; i++) {
-            const course = courses.find((c) => c.name === schedule[i]);
-            const faculty = course.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
-            timeTable[day].push({ slot: slots[i], course: course.name, faculty: faculty });
-          }
-        });
-
-        return timeTable;
-      }
 
 
         // prompt user to select a time slot option
