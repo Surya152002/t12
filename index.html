@@ -106,6 +106,14 @@
   </head>
   <body>
     <h1>Time Table:</h1>
+    <form>
+      <label for="slot">Select a slot:</label>
+      <select id="slot" name="slot">
+        <option value="morning">Morning (8:00 AM)</option>
+        <option value="evening">Evening (2:00 PM)</option>
+      </select>
+      <button type="button" onclick="generateTimeTable()">Generate</button>
+    </form>
     <table>
       <thead>
         <tr>
