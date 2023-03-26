@@ -171,18 +171,18 @@
           return timeTable;
         }
 
-//         // prompt user to select a time slot option
-//         const slotOption = prompt("Enter 1 for morning slot (starting at 8:00 AM) or 2 for evening slot (starting at 2:00 PM)");
+        // prompt user to select a time slot option
+        const slotOption = prompt("Enter 1 for morning slot (starting at 8:00 AM) or 2 for evening slot (starting at 2:00 PM)");
 
-//         let slots;
-//         if (slotOption === "1") {
-//           slots = morningSlots;
-//         } else if (slotOption === "2") {
-//           slots = eveningSlots;
-//         } else {
-//           alert("Invalid option selected. Defaulting to morning slot.");
-//           slots = morningSlots;
-//         }
+        let slots;
+        if (slotOption === "1") {
+          slots = morningSlots;
+        } else if (slotOption === "2") {
+          slots = eveningSlots;
+        } else {
+          alert("Invalid option selected. Defaulting to morning slot.");
+          slots = morningSlots;
+        }
 
         // generate time table
         const timeTable = generateTimeTable(courses, slots);
