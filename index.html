@@ -158,38 +158,20 @@
               timeTable[day] = [];
               const slotsCopy = [...slots]; // make a copy of slots for the current day
               for (let i = 0; i < slots.length; i++) {
-                let bestCourse = null;
-                courses.forEach((course) => {
+                const availableCourses = courses.filter((course) => {
                   const faculty = course.faculty.find((f) => f.availability[daysOfWeek.indexOf(day)]);
-                  if (faculty && !slotsCopy.includes(course.name) && (!bestCourse || course.faculty.find((f) => f.ratings > bestCourse.faculty.ratings))) {
-                    bestCourse = { course, faculty };
-                  }
+                  return faculty && !slotsCopy.includes(course.name); // check if course is available and hasn't been assigned to a slot yet
                 });
-                if (bestCourse) {
-                  slotsCopy.push(bestCourse.course.name);
-                  timeTable[day].push({
-                    slot: slots[i],
-                    course: bestCourse.course.name,
-                    faculty: bestCourse.faculty.name,
-                    ratings: bestCourse.faculty.ratings,
-                    availability: bestCourse.faculty.availability[daysOfWeek.indexOf(day)],
-                  });
-                } else {
-                  timeTable[day].push({
-                    slot: slots[i],
-                    course: "-",
-                    faculty: "-",
-                    ratings: "-",
-                    availability: false,
-                  });
+                if (availableCourses.length === 0) {
+                  break; // no available courses for the remaining slots
                 }
+                const selectedCourse = availableCourses[Math.floor(Math.random() * availableCourses.length)]; // select a random course
+                slotsCopy[i] = selectedCourse.name; // assign the course to the slot
+                timeTable[day].push({ slot: slots[i], course: selectedCourse.name, faculty: selectedCourse.faculty }); // add the course to the time table
               }
             });
             return timeTable;
           }
-
-
-
           // generate time table
           const timeTable = generateTimeTable(courses);
 
